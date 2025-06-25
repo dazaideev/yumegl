@@ -9,10 +9,8 @@ class Program : public Scene {
     rd::TexSquare* player{ nullptr };
     bool jumping = false;
     float velocity = 0.0f;
-    const float gravity = 0.001f;
+    const float gravity = 0.0012f;
     const float jumpForce = -0.03f;
-    float player_mass = 5.0;
-    float friction_force = 0.0;
 
 public:
     Program();
@@ -29,7 +27,7 @@ private:
 };
 
 Program::Program() {
-    yumegl::setWindowSize(1280, 720);
+    yumegl::setWindowSize(720, 720);
     yumegl::init("flappy drone");
 }
 
@@ -48,13 +46,11 @@ void Program::start() {
 }
 
 void Program::update() {
-    // std::cout << "- velocity: " << velocity << std::endl;
-
     if (input::keyPressed(KEY_ESCAPE))
         yumegl::setWindowStatus(false);
 
     if (player->position.y() < 0.8f) {
-        //velocity += gravity;
+        velocity += gravity;
     }
     else {
         velocity = 0;
@@ -66,10 +62,6 @@ void Program::update() {
     }
 
     player->position.container.y += velocity;
-
-    // SIŁA TARCIA
-    friction_force = -velocity / 20;
-    velocity += friction_force;
 }
 
 void Program::render() {
